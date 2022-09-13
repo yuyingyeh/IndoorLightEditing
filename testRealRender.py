@@ -17,7 +17,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 import torch.nn.functional as F
 import os.path as osp
-import lossFunctions
+# import lossFunctions
 import scipy.ndimage as ndimage
 import renderShadowDepth
 import pickle
@@ -190,6 +190,7 @@ parser.add_argument('--winSrcIntWeight', type=float, default=0.001, help='the lo
 parser.add_argument('--winSrcAxisWeight', type=float, default=1.0, help='the loss for window light source' )
 parser.add_argument('--winSrcLambWeight', type=float, default=0.001, help='the loss for window light source' )
 
+parser.add_argument('--fovX', type=float, default=57.95)
 
 # Starting and ending point
 parser.add_argument('--rs', type=int, default=0, help='starting point' )
@@ -660,7 +661,8 @@ for dataId in range(max(opt.rs, 0), min(opt.re, len(dirList ) ) ):
         renderedPred ** (1 / 2.2 ),
         envMaskBatch,
         osp.join(outputDir, 'room.ply'),
-        isNormalize = False
+        isNormalize = False,
+        fov=opt.fovX
     )
 
     for n in range(0, visWinNum ):
